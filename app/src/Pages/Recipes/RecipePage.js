@@ -15,9 +15,13 @@ const useStyles = makeStyles(() => ({
     recipeTitle: {
         textAlign: "center",
     },
+    button: {
+        float: 'right',
+        margin: '1%',
+    },
 }));
 
-function RecipePage() {
+export default () => {
   const match = useRouteMatch();
   const classes = useStyles();
 
@@ -54,5 +58,3 @@ function RecipePage() {
     </Switch>
   );
 };
-
-export default RecipePage;

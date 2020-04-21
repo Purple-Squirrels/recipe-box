@@ -22,27 +22,11 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
     head: {
-        backgroundColor: "#00bde5",
+        backgroundColor: theme.palette.primary.main,
         color: "#FFFFFF",
     },
 }));
-
-const ColorLinearProgress = withStyles({
-    colorPrimary: {
-        backgroundColor: '#ccf6ff',
-    },
-    barColorPrimary: {
-        backgroundColor: '#00bde5',
-    },
-})(LinearProgress);
 
 export default () => {
     const [recipes, setRecipes] = useState([]);
@@ -64,6 +48,9 @@ export default () => {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
+            },
+            body: {
+                user: 'emma'
             }
         };
 
@@ -72,7 +59,6 @@ export default () => {
             const fetchResponse = await fetch(`/recipes/${recipe.recipe_id}`, settings);
             const data = await fetchResponse.json();
             if (data.nodeStatus === 200) {
-
                 buildSuccessfulDeleteSnackBar(recipe.recipe_name);
             } else {
                 buildFailedDeleteSnackBar(recipe.recipe_name);
@@ -154,7 +140,7 @@ export default () => {
     } else {
         return(
             <div>
-                <ColorLinearProgress />
+                <LinearProgress />
             </div>
         );
     }
