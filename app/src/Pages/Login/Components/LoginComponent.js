@@ -28,16 +28,32 @@ export default () => {
   const context = useContext(AppContext);
   const { setAuthTokens } = useAuth();
 
-  const [userName, setUserName] = useState(0);
+  const [username, setUsername] = useState(0);
+  const [password, setPassword] = useState(0);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const loginApi = async (userNameParam) => {
+  const loginApi = async () => {
+    const details = {
+        username: username,
+        password: password,
+    };
+
+    const settings = {
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(details),
+    };
+
     try {
-      const fetchResponse = await fetch(`/user?user_name=${userNameParam}`);
+      // const fetchResponse = await fetch(`/user?user_name=${userNameParam}`);
+      const fetchResponse = await fetch(`/login`, settings);
       const data = await fetchResponse.json();
+
       if (data.nodeStatus === 200) {
           setAuthTokens({authTokens: "abcdefg"});
-          setSessionCookie({ userName });
           setLoggedIn(true);
       } else if (data.nodeStatus === 401) {
         window.alert("You need to create an account Brah. Create an account or go to another site, Tanks :)");
@@ -64,40 +80,35 @@ export default () => {
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
-        <TextField
-          variant="outlined"
-          margin="normal"
-          required
-          fullWidth
-          id="email"
-          label="User Name"
-          name="user_name"
-          autoComplete="use_name"
-          autoFocus
-          onKeyDown={(e) => {
-            if (e.key !== 'Enter') { return; };
-            loginApi(userName);
-            setUserName('');
-            e.target.value = '';
-          }}
-          onChange={(e) => {
-            setUserName(e.target.value);
-          }}
-        />
-        <Button
-          type="submit"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className={formClasses.submit}
-          onClick={(e) => {
-            loginApi(userName);
-            document.getElementById('email').value = '';
-            context.setCurrentUserName(userName.toString());
-          }}
-        >
-          Sign In
-        </Button>
+          <form className={formClasses.form} onSubmit={loginApi}>
+              <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Username"
+                  autoFocus
+                  onChange={e => setUsername(e.target.value)}/>
+              <TextField
+                  variant="outlined"
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Password"
+                  autoFocus
+                  type="password"
+                  onChange={e => setPassword(e.target.value)}/>
+              <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  className={formClasses.submit}>
+                  Sign In
+              </Button>
+          </form>
+
+
         <Grid container>
           <Grid item>
             <Link variant="body2" onClick={ () => context.setDisplaySignUp(true) } >
