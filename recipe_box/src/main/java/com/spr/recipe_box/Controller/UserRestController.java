@@ -4,6 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.spr.recipe_box.Constant.Constants;
 import com.spr.recipe_box.Config.RestClass;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -12,11 +15,17 @@ import java.util.HashMap;
 @RestController
 @RequestMapping(value = "/user", produces = "application/json")
 public class UserRestController extends RestClass {
-    @GetMapping
-    public String getUser(@RequestParam(value="user_name") String name) {
-        String url = env.equals(Constants.DEV_BOOL) ? Constants.NODE_DEV_ENV + Constants.USER_NAME_QUERY + name : Constants.NODE_PROD_ENV + Constants.USER_NAME_QUERY + name;
-        RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+    public RestTemplate restTemplate = new RestTemplate();
+
+    @GetMapping(value = "/login")
+    public String login(@RequestHeader("Authorization") String auth) {
+        System.out.println(auth);
+        String url = env.equals(Constants.DEV_BOOL) ? Constants.NODE_DEV_ENV + Constants.LOGIN : Constants.NODE_PROD_ENV + Constants.LOGIN;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setBasicAuth(auth);
+        HttpEntity requestEntity = new HttpEntity(headers);
+        ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+        System.out.println(response);
         return response.getBody();
     }
 

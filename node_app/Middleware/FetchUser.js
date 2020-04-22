@@ -1,4 +1,5 @@
 const AWS = require("aws-sdk");
+const Buffer = require("buffer").Buffer;
 const keys = require("../Keys");
 const HelperObject = require("../HelperObject/Helper");
 
@@ -7,10 +8,13 @@ AWS.config.update(keys.awsConfig);
 const docClient = new AWS.DynamoDB.DocumentClient();
 
 module.exports = (req, res, next) => {
+    const encodedUsername = req.headers.authorization.replace("Basic ", "");
+    const decodedUsername = Buffer.from(encodedUsername, 'base64').toString('ascii');
+    console.log(decodedUsername);
     const params = {
         TableName: "Recipe_Users",
         Key: {
-            "user_name": req.query.user_name
+            "user_name": decodedUsername,
         }
     };
 

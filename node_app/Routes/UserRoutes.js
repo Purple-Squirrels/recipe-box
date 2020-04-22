@@ -4,7 +4,7 @@ const AddUserMiddleware = require("../Middleware/Users/AddUser");
 const express = require('express');
 const router = express.Router();
 
-router.get("/", FetchUserMiddleware, (req, res) => {
+router.get("/login", FetchUserMiddleware, (req, res) => {
     if (res.locals.validUser) {
         return res.send({nodeStatus: 200});
     } else if (res.locals.nonValidUser) {

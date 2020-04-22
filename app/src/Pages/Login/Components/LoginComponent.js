@@ -27,8 +27,7 @@ export default () => {
   const context = useContext(AppContext);
   const { setAuthTokens } = useAuth();
 
-  const [username, setUsername] = useState(0);
-  const [password, setPassword] = useState(0);
+  const [username, setUsername] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
 
   const loginApi = async () => {
@@ -37,16 +36,14 @@ export default () => {
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            authorization: 'Basic ' + window.btoa("in28Minutes:dummy")
+            authorization: window.btoa(username),
         }
     };
 
     try {
-      // const fetchResponse = await fetch(`/user?user_name=${userNameParam}`);
-      const fetchResponse = await fetch(`/login`, settings);
+      const fetchResponse = await fetch(`/user/login`, settings);
       const data = await fetchResponse.json();
 
-      console.log(data);
       if (data.nodeStatus === 200) {
           setAuthTokens({authTokens: "abcdefg"});
           setLoggedIn(true);
@@ -84,15 +81,6 @@ export default () => {
                   label="Username"
                   autoFocus
                   onChange={e => setUsername(e.target.value)}/>
-              <TextField
-                  variant="outlined"
-                  margin="normal"
-                  required
-                  fullWidth
-                  label="Password"
-                  autoFocus
-                  type="password"
-                  onChange={e => setPassword(e.target.value)}/>
               <Button
                   type="submit"
                   fullWidth

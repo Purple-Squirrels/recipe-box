@@ -19,8 +19,7 @@ public class RecipeDBRestController extends RestClass {
     public RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping(value = "/{id}")
-    public String findById(@PathVariable("id") String recipe_id, @RequestBody HashMap<String, String> body) {
-        System.out.println(body);
+    public String findById(@PathVariable("id") String recipe_id) {
         String url = env.equals(Constants.DEV_BOOL) ? Constants.NODE_DEV_ENV + Constants.RECIPES + recipe_id : Constants.NODE_PROD_ENV + Constants.RECIPES + recipe_id;
         ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
         return response.getBody();
