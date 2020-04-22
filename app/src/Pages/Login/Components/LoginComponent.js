@@ -13,6 +13,7 @@ import { Redirect } from "react-router-dom";
 import globalFormStyles from '../../../GlobalFormStyles';
 import AppContext from '../../../Context/app-context';
 import { setSessionCookie } from '../../../Sessions';
+import { useAuth } from "../../../Context/auth";
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -25,17 +26,19 @@ export default () => {
   const classes = useStyles();
   const formClasses = globalFormStyles();
   const context = useContext(AppContext);
+  const { setAuthTokens } = useAuth();
 
   const [userName, setUserName] = useState(0);
-  const [redirectFire, setRedirectFire] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const loginApi = async (userNameParam) => {
     try {
       const fetchResponse = await fetch(`/user?user_name=${userNameParam}`);
       const data = await fetchResponse.json();
       if (data.nodeStatus === 200) {
-        setSessionCookie({ userName });
-        setRedirectFire(true);
+          setAuthTokens({authTokens: "abcdefg"});
+          setSessionCookie({ userName });
+          setLoggedIn(true);
       } else if (data.nodeStatus === 401) {
         window.alert("You need to create an account Brah. Create an account or go to another site, Tanks :)");
       } else if (data.nodeStatus === 404) {
@@ -47,7 +50,7 @@ export default () => {
     }
   };
 
-  if (redirectFire) {
+  if (loggedIn) {
     return <Redirect push to="/dashboard" />
   }
 

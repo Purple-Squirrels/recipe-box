@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,37 +10,44 @@ import RecipePage from './Pages/Recipes/RecipePage';
 import './App.css';
 import GlobalState from './Context/GlobalState';
 import AppContext from './Context/app-context';
+import { AuthContext } from './Context/auth';
 
 import MikeyTicTacToe from './Pages/MikeyTicTacToe/Pages/MikeyApp/MikeyApp';
 import EmmaTicTacToe from './Pages/EmmaTicTacToe/EmmaTicTacToe';
 import PrivateRoute from './Shared/PrivateRoute';
-import LogOutHandler from './Pages/LogOut/LogOutComponent';
+
 
 const App = () => {
+    // const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+    const [authTokens, setAuthTokens] = useState(false);
+
+    const setTokens = (data) => {
+        localStorage.setItem("tokens", JSON.stringify(data));
+        console.log('setting', data);
+        setAuthTokens(data);
+    };
+
   return (
     <GlobalState>
-        <AppContext.Consumer>
-        {() => (
-          <Router>
-            <div>
-              {/* A <Switch> looks through its children <Route>s and
-              renders the first one that matches the current URL. */}
-              <Switch>
-                <PrivateRoute path="/recipe" component={RecipePage}/>
-                <PrivateRoute path="/dashboard" component={DashboardPage} />
-                <PrivateRoute path="/mikey-tic-tac-toe" component={MikeyTicTacToe} />
-                <PrivateRoute path="/emma-tic-tac-toe" component={EmmaTicTacToe} />
-                <Route path="/logout">
-                  <LogOutHandler />
-                </Route>
-                <Route path="/">
-                  <LoginPage />
-                </Route>
-              </Switch>
-            </div>
-          </Router>
-        )}
-        </AppContext.Consumer>
+        <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
+            <AppContext.Consumer>
+                {() => (
+                  <Router>
+                    <div>
+                      {/* A <Switch> looks through its children <Route>s and
+                      renders the first one that matches the current URL. */}
+                      <Switch>
+                        <PrivateRoute path="/dashboard" component={DashboardPage} />
+                        <PrivateRoute path="/recipe" component={RecipePage}/>
+                        <PrivateRoute path="/mikey-tic-tac-toe" component={MikeyTicTacToe} />
+                        <PrivateRoute path="/emma-tic-tac-toe" component={EmmaTicTacToe} />
+                        <Route path="/" component={LoginPage} />
+                      </Switch>
+                    </div>
+                  </Router>
+                )}
+            </AppContext.Consumer>
+        </AuthContext.Provider>
     </GlobalState>
     );
 };

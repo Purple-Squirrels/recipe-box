@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme, createStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,10 +21,11 @@ import AddBoxIcon from '@material-ui/icons/AddBox';
 import ListIcon from '@material-ui/icons/List';
 import CasinoIcon from '@material-ui/icons/Casino';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import { useAuth } from "../../Context/auth";
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles((theme) =>
     createStyles({
         root: {
             display: 'flex',
@@ -74,6 +75,7 @@ export default () => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
+    const { setAuthTokens } = useAuth();
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -81,6 +83,11 @@ export default () => {
 
     const handleDrawerClose = () => {
         setOpen(false);
+    };
+
+    const logOut = () => {
+        setAuthTokens();
+        handleDrawerClose();
     };
 
     return (
@@ -155,12 +162,10 @@ export default () => {
                         </ListItem>
                     </Link>
                     <Divider />
-                    <Link className={classes.navLink} to="/logout" onClick={handleDrawerClose}>
-                        <ListItem button key="Log Out">
-                            <ListItemIcon><ExitToAppIcon /></ListItemIcon>
-                            <ListItemText primary={'Log Out'} />
-                        </ListItem>
-                    </Link>
+                    <ListItem className={classes.navLink} onClick={logOut} button key="Log Out">
+                        <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+                        <ListItemText primary={'Log Out'} />
+                    </ListItem>
                 </List>
             </Drawer>
         </div>
