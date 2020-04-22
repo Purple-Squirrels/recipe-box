@@ -12,7 +12,6 @@ import Container from '@material-ui/core/Container';
 import { Redirect } from "react-router-dom";
 import globalFormStyles from '../../../GlobalFormStyles';
 import AppContext from '../../../Context/app-context';
-import { setSessionCookie } from '../../../Sessions';
 import { useAuth } from "../../../Context/auth";
 
 const useStyles = makeStyles(theme => ({
@@ -33,18 +32,13 @@ export default () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   const loginApi = async () => {
-    const details = {
-        username: username,
-        password: password,
-    };
-
     const settings = {
-        method: 'POST',
+        method: 'GET',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(details),
+            authorization: 'Basic ' + window.btoa("in28Minutes:dummy")
+        }
     };
 
     try {
@@ -52,6 +46,7 @@ export default () => {
       const fetchResponse = await fetch(`/login`, settings);
       const data = await fetchResponse.json();
 
+      console.log(data);
       if (data.nodeStatus === 200) {
           setAuthTokens({authTokens: "abcdefg"});
           setLoggedIn(true);
