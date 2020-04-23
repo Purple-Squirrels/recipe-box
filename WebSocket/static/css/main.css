@@ -1,0 +1,45 @@
+button {
+  margin: 5px 0;
+}
+
+input {
+  margin: 5px 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: darkgray;
+}
+
+main {
+  height: 70vh;
+  text-align: center;
+}
+
+body > section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 30vh;
+  width: 60vw;
+  border: 3px solid black;
+  margin: 30px;
+  border-radius: 8px;
+  background-color: whitesmoke;
+}
+
+main section {
+  height: 30px;
+  width: 60vw;
+  background-color: whitesmoke;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
