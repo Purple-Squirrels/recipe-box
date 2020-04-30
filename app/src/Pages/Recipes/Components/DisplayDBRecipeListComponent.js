@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import {makeStyles, withStyles} from "@material-ui/core/styles/index";
+import {makeStyles } from "@material-ui/core/styles/index";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,6 +14,8 @@ import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import CustomSnackBar from '../../../Shared/CustomSnackBar/CustomSnackBar';
+import { useAuth } from "../../../Context/auth";
+import {getSessionCookie} from "../../../Sessions";
 
 const useStyles = makeStyles(theme => ({
     paper: {
@@ -22,27 +24,11 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
     head: {
-        backgroundColor: "#00bde5",
+        backgroundColor: theme.palette.primary.main,
         color: "#FFFFFF",
     },
 }));
-
-const ColorLinearProgress = withStyles({
-    colorPrimary: {
-        backgroundColor: '#ccf6ff',
-    },
-    barColorPrimary: {
-        backgroundColor: '#00bde5',
-    },
-})(LinearProgress);
 
 export default () => {
     const [recipes, setRecipes] = useState([]);
@@ -50,11 +36,27 @@ export default () => {
     const [openSnackBar, setOpenSnackBar] = useState(false);
     const [snackBarMessage, setSnackBarMessage] = useState(false);
     const [snackBarVariant, setSnackBarVariant] = useState(false);
-
+    const [session, setSession] = useState(getSessionCookie());
+    useEffect(
+        () => {
+            setSession(getSessionCookie());
+        },
+        [session.userName]
+    );
     const classes = useStyles();
+    const { authTokens } = useAuth();
 
     const fetchRecipes = async () => {
-        const response = await fetch('/recipes');
+
+        const settings = {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            }
+        };
+        const url = '/user/' + (authTokens.authTokens || session.authToken) + '/recipes';
+        const response = await fetch(url, settings);
         const body = await response.json();
         return body;
     };
@@ -72,7 +74,6 @@ export default () => {
             const fetchResponse = await fetch(`/recipes/${recipe.recipe_id}`, settings);
             const data = await fetchResponse.json();
             if (data.nodeStatus === 200) {
-
                 buildSuccessfulDeleteSnackBar(recipe.recipe_name);
             } else {
                 buildFailedDeleteSnackBar(recipe.recipe_name);
@@ -102,7 +103,7 @@ export default () => {
     useEffect(() => {
         fetchRecipes()
         .then(body => {
-            setRecipes(body.Items);
+            setRecipes(body["Items"]);
             setLoad(true);
         })
         .catch(() => {
@@ -154,7 +155,7 @@ export default () => {
     } else {
         return(
             <div>
-                <ColorLinearProgress />
+                <LinearProgress />
             </div>
         );
     }

@@ -102,7 +102,7 @@ export default (props) => {
             servings: servings,
             ingredients: ingredients,
             directions: directions,
-            userName: session.userName,
+            userName: session.authToken,
         };
         props.allDetails(data);
     };
