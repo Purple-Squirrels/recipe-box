@@ -17,6 +17,14 @@ import java.util.HashMap;
 public class UserRestController extends RestClass {
     public RestTemplate restTemplate = new RestTemplate();
 
+    @GetMapping
+    public String getUser(@RequestParam(value="user_name") String name) {
+        String url = env.equals(Constants.DEV_BOOL) ? Constants.NODE_DEV_ENV + Constants.USER_NAME_QUERY + name : Constants.NODE_PROD_ENV + Constants.USER_NAME_QUERY + name;
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+        return response.getBody();
+    }
+
     @GetMapping(value = "/login")
     public String login(@RequestHeader("Authorization") String auth) {
         System.out.println(auth);
