@@ -17,6 +17,7 @@ import MikeyTicTacToe from './Pages/MikeyTicTacToe/Pages/MikeyApp/MikeyApp';
 import EmmaTicTacToe from './Pages/EmmaTicTacToe/EmmaTicTacToe';
 import PrivateRoute from './Shared/PrivateRoute';
 import LogoutHandler from "./Pages/LogOut/LogOutComponent";
+import MessengerModal from './Shared/MessengerModal/MessengerModal';
 
 
 const App = () => {
@@ -45,6 +46,7 @@ const App = () => {
                                 <Route path="/logout" component={LogoutHandler} />
                                 <Route path="/" component={LoginPage} />
                             </Switch>
+                            <MessengerModal />
                         </div>
                     </Router>
                 )}
