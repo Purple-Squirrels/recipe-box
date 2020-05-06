@@ -27,6 +27,7 @@ public class RecipeFindByIdHelper {
 //                        map.path("Instructions").asText());
 
                 myRecipe.setRecipe_name(map.path("Title").asText());
+                myRecipe.setRecipe_id(map.path("RecipeID").asText());
                 myRecipe.setDescription(map.path("Description").asText());
                 myRecipe.setCook_time(map.path("TotalMinutes").asText());
                 myRecipe.setServings(map.path("YieldNumber").asText());

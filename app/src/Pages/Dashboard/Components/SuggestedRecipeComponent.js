@@ -28,7 +28,7 @@ export default () => {
     const [loading, setLoading] = useState(true);
 
     const fetchSuggestedRecipes = async() => {
-        const response = await fetch('/bigoven/recipes/random');
+        const response = await fetch('/bigoven/recipes/random_details');
         const body = await response.json();
         return body;
     };

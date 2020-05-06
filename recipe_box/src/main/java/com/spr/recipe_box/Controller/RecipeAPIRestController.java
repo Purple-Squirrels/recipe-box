@@ -33,7 +33,7 @@ public class RecipeAPIRestController {
         List<Recipe> recipeDetails = new ArrayList<>();
         int count = 0;
        // System.out.print("\n\n\n\n");
-        while(recipeList.size() > count){
+        while(count < 8){
             //System.out.println("RECIPE_ID: "+ recipeList.get(count).getRecipe_id());
             recipeDetails.add(recipeService.findById(recipeList.get(count).getRecipe_id()));
             //System.out.println("Recipe Details at count "+ count + ": " + recipeDetails.get(count));
