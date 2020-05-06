@@ -20,14 +20,15 @@ import java.util.List;
 public class RecipeService {
     HttpHeaders headers = new HeadersHelper().jsonHeader();
 
-    public List<Recipe> findById(String recipe_id){
-        List<Recipe> recipeList = new ArrayList<>();
+    public Recipe findById(String recipe_id){
+        //List<Recipe> recipeList = new ArrayList<>();
+        Recipe myRecipe = new Recipe();
         String url = Constants.BIG_OVEN + Constants.RECIPE + recipe_id + Constants.API_KEY_QUERY + Keys.BIG_OVEN_KEY;
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = RecipeServiceHelper.getStringResponseEntity(url, restTemplate, headers);
         ObjectMapper mapper = new ObjectMapper();
-        RecipeFindByIdHelper.buildFindByIdList(recipeList, response, mapper);
-        return recipeList;
+        RecipeFindByIdHelper.buildFindByIdList(myRecipe, response, mapper);
+        return myRecipe;
     }
 
     public List<Recipe> get25Random() {

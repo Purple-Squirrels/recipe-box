@@ -10,28 +10,36 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeFindByIdHelper {
-    public static void buildFindByIdList(List<Recipe> recipeList, ResponseEntity<String> response, ObjectMapper mapper) {
+    public static void buildFindByIdList(Recipe myRecipe, ResponseEntity<String> response, ObjectMapper mapper) {
         try {
             if (!response.hasBody()) {
                 System.out.println("Nothing exists in response body");
             } else {
                 JsonNode map = mapper.readTree(response.getBody());
 
-                Recipe myRecipe = new Recipe(
-                        map.path("Title").asText(),
-                        "",
-                        map.path("Description").asText(),
-                        map.path("TotalMinutes").asText(),
-                        "",
-                        map.path("YieldNumber").asText(),
-                        map.path("Instructions").asText());
+//                Recipe myRecipe = new Recipe(
+//                        map.path("Title").asText(),
+//                        "",
+//                        map.path("Description").asText(),
+//                        map.path("TotalMinutes").asText(),
+//                        "",
+//                        map.path("YieldNumber").asText(),
+//                        map.path("Instructions").asText());
+
+                myRecipe.setRecipe_name(map.path("Title").asText());
+                myRecipe.setDescription(map.path("Description").asText());
+                myRecipe.setCook_time(map.path("TotalMinutes").asText());
+                myRecipe.setServings(map.path("YieldNumber").asText());
+                myRecipe.setDirections(map.path("Instructions").asText());
+
+                System.out.println("\n\n\n" + myRecipe + "\n\n\n");
 
                 JsonNode ingredientsNode = map.path("Ingredients");
                 if (ingredientsNode.isArray()){
                     List<String> recipeIngredientList = new ArrayList<>();
                     createRecipeIngredientList(myRecipe, ingredientsNode, recipeIngredientList);
                 }
-                recipeList.add(myRecipe);
+               // recipeList.add(myRecipe);
             }
         }
         catch (IOException ioe) {
