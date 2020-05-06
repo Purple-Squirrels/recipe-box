@@ -1,55 +1,40 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"log"
-	"net"
+	"github.com/googollee/go-socket.io"
 )
 
-var playerMap = map[string]net.Conn{}
-var totalPlayers = 0
-
 func main() {
-	li, err := net.Listen("tcp", ":8082")
-	if err != nil { log.Fatalln(err) }
-
-	for {
-		conn, err := li.Accept()
-		if err != nil { log.Println(err) }
-		if totalPlayers < 2 {
-			_, ok := playerMap["Player-1"]
-			if ok == false {
-				playerMap["Player-1"] = conn
-				totalPlayers++
-				go request(conn, "Player-1")
-			} else {
-				playerMap["Player-2"] = conn
-				totalPlayers++
-				go request(conn, "Player-2")
-			}
-		} else {
-			conn.Close()
-		}
+	router := gin.New()
+	server, err := socketio.NewServer(nil)
+	if err != nil {
+		log.Fatal(err)
 	}
+	server.OnConnect("/", func(s socketio.Conn) error {
+		s.Join("players")
+		s.Emit("playerNumber", server.RoomLen("/", "players"))
+		if server.RoomLen("/", "players") == 2 {
+			server.BroadcastToRoom("/", "players", "playersReady")
+		}
+		return nil
+	})
+	server.OnEvent("/playerMessage", "dataFromPlayer", func(s socketio.Conn, msg string) {
+		server.BroadcastToRoom("/", "players", "incomingData", msg)
+	})
+	server.OnError("/", func(s socketio.Conn, e error) {
+		fmt.Println("meet error:", e)
+	})
+	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
+		fmt.Println("closed", reason)
+	})
+
+	go server.Serve()
+	defer server.Close()
+
+	GinRouter(router, server)
 }
 
-func request (conn net.Conn, player string) {
-	scanner := bufio.NewScanner(conn)
-	for scanner.Scan() {
-		ln := scanner.Text()
-		if totalPlayers == 1 {
-			fmt.Fprintln(conn,"Waiting for additional players")
-		} else if totalPlayers == 2 {
-			if player == "Player-1" {
-				fmt.Fprintln(playerMap["Player-2"],"Message from other player1: " + ln)
-			} else {
-				fmt.Fprintln(playerMap["Player-1"] ,"Message from other player2: " + ln)
-			}
-		}
-	}
-	conn.Close()
-	totalPlayers--
-	delete(playerMap, player)
-}
 
