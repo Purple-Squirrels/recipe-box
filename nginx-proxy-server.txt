@@ -1,0 +1,27 @@
+This file is just for a reference. This is the configuration for the nginx proxy server on our EC2 instance.
+
+server {
+    if ($host = www.sprpurplesquirrel.com) {
+        return 301 https://$host$request_uri;
+    }
+
+	listen	80 default_server;
+	server_name   www.sprpurplesquirrel.com;
+	return 301 https://$server_name$request_uri;
+}
+
+server {
+	listen 443 ssl;
+	server_name   www.sprpurplesquirrel.com;
+
+        ssl_certificate /etc/letsencrypt/live/sprpurplesquirrel.com/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/sprpurplesquirrel.com/privkey.pem;
+
+	location / {
+                proxy_pass "http://localhost:8080/";
+        }
+
+	location /node/ {
+		proxy_pass "http://localhost:8081/";
+	}
+}
