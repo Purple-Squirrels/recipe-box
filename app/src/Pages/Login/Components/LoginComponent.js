@@ -50,6 +50,7 @@ export default () => {
         setAuthTokens({authTokens: encodedUserName});
         setSessionCookie({ authToken: encodedUserName });
         setLoggedIn(true);
+        context.setConnectMessenger(true);
       } else if (data.nodeStatus === 401) {
         window.alert("You need to create an account Brah. Create an account or go to another site, Tanks :)");
       } else if (data.nodeStatus === 404) {
@@ -88,6 +89,7 @@ export default () => {
           onKeyDown={(e) => {
             if (e.key !== 'Enter') { return; };
             loginApi(userName);
+            context.setCurrentUserName(userName.toString());
             setUserName('');
             e.target.value = '';
           }}
