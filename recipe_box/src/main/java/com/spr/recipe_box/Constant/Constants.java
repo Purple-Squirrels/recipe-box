@@ -5,6 +5,7 @@ public class Constants {
     public static final String RECIPE = "recipe/";
     public static final String RECIPES = "recipes/";
     public static final String USER = "user/";
+    public static final String LOGIN = "user/login";
     public static final String CAT = "cat";
     public static final String GIF = "cat/gif";
     public static final String TOP25 = "top25random";

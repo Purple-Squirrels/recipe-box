@@ -13,6 +13,7 @@ module.exports = (req, res, next) => {
         "servings":req.body.servings,
         "ingredients": req.body.ingredients,
         "directions":req.body.directions,
+        "created_by": req.body.userName,
         "updated_by": req.body.userName,
         "updated_on": new Date().toString(),
     };

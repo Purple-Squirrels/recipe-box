@@ -1,10 +1,11 @@
-const FetchUserMiddleware = require("../Middleware/FetchUser");
+const LoginMiddleware = require("../Middleware/Users/Login");
 const AddUserMiddleware = require("../Middleware/Users/AddUser");
+const GetAllRecipes = require("../Middleware/Recipes/GetAllRecipes");
 
 const express = require('express');
 const router = express.Router();
 
-router.get("/", FetchUserMiddleware, (req, res) => {
+router.get("/login", LoginMiddleware, (req, res) => {
     if (res.locals.validUser) {
         return res.send({nodeStatus: 200});
     } else if (res.locals.nonValidUser) {
@@ -13,8 +14,12 @@ router.get("/", FetchUserMiddleware, (req, res) => {
         return res.send({
             nodeStatus: 404,
             error: res.locals.error
-        });
+        })
     }
+});
+
+router.get("/:id/recipes", GetAllRecipes, (req, res) => {
+    res.send(res.locals.data);
 });
 
 router.post("/", AddUserMiddleware, (req, res) => {

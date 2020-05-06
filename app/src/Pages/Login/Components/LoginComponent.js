@@ -12,6 +12,7 @@ import Container from '@material-ui/core/Container';
 import { Redirect } from "react-router-dom";
 import globalFormStyles from '../../../GlobalFormStyles';
 import AppContext from '../../../Context/app-context';
+import { useAuth } from "../../../Context/auth";
 import { setSessionCookie } from '../../../Sessions';
 
 const useStyles = makeStyles(theme => ({
@@ -25,17 +26,30 @@ export default () => {
   const classes = useStyles();
   const formClasses = globalFormStyles();
   const context = useContext(AppContext);
+  const { setAuthTokens } = useAuth();
 
-  const [userName, setUserName] = useState(0);
-  const [redirectFire, setRedirectFire] = useState(false);
+  const [userName, setUserName] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
 
-  const loginApi = async (userNameParam) => {
+  const loginApi = async () => {
+    const encodedUserName = window.btoa(userName);
+    const settings = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Basic ' + encodedUserName,
+      }
+    };
+
     try {
-      const fetchResponse = await fetch(`/user?user_name=${userNameParam}`);
+      const fetchResponse = await fetch(`/user/login`, settings);
       const data = await fetchResponse.json();
+
       if (data.nodeStatus === 200) {
-        setSessionCookie({ userName });
-        setRedirectFire(true);
+        setAuthTokens({authTokens: encodedUserName});
+        setSessionCookie({ authToken: encodedUserName });
+        setLoggedIn(true);
       } else if (data.nodeStatus === 401) {
         window.alert("You need to create an account Brah. Create an account or go to another site, Tanks :)");
       } else if (data.nodeStatus === 404) {
@@ -47,7 +61,7 @@ export default () => {
     }
   };
 
-  if (redirectFire) {
+  if (loggedIn) {
     return <Redirect push to="/dashboard" />
   }
 

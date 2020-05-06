@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { getSessionCookie } from '../Sessions';
 import NavBarComponent from './NavBarComponent/NavBarComponent';
+import { useAuth } from "../Context/auth";
+import { getSessionCookie } from '../Sessions';
 
-
-export default function PrivateRoute({ component: Component, ...rest }) {
+export default ({ component: Component, ...rest }) => {
+    const { authTokens } = useAuth();
     const [session, setSession] = useState(getSessionCookie());
     useEffect(
       () => {
@@ -15,11 +16,14 @@ export default function PrivateRoute({ component: Component, ...rest }) {
 
     return (
         <Route exact {...rest} render={(props) => (
-            (typeof session.userName === 'undefined')
-            ? <Redirect to='/' />
-            : <div><NavBarComponent /><Component {...props}/></div>
+            (authTokens || session.authToken !== undefined) ? (
+                <div>
+                    <NavBarComponent />
+                    <Component {...props}/>
+                </div>
+            ) : (
+                <Redirect to='/' />
+            )
         )}/>
     )
-}
-
-
+};

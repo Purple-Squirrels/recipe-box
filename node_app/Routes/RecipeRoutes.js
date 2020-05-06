@@ -1,15 +1,10 @@
 const GetRecipeById = require("../Middleware/Recipes/GetRecipeById");
-const GetAllRecipes = require("../Middleware/Recipes/GetAllRecipes");
 const CreateRecipe = require("../Middleware/Recipes/CreateRecipe");
 const UpdateRecipe = require('../Middleware/Recipes/UpdateRecipe');
 const DeleteRecipe = require("../Middleware/Recipes/DeleteRecipe");
 
 const express = require('express');
 const router = express.Router();
-
-router.get("/", GetAllRecipes, (req, res) => {
-    res.send(res.locals.data);
-});
 
 router.get("/:id", GetRecipeById, (req, res) => {
     res.send(res.locals.data);
