@@ -17,15 +17,6 @@ public class RecipeFindByIdHelper {
             } else {
                 JsonNode map = mapper.readTree(response.getBody());
 
-//                Recipe myRecipe = new Recipe(
-//                        map.path("Title").asText(),
-//                        "",
-//                        map.path("Description").asText(),
-//                        map.path("TotalMinutes").asText(),
-//                        "",
-//                        map.path("YieldNumber").asText(),
-//                        map.path("Instructions").asText());
-
                 myRecipe.setRecipe_name(map.path("Title").asText());
                 myRecipe.setRecipe_id(map.path("RecipeID").asText());
                 myRecipe.setDescription(map.path("Description").asText());
@@ -33,14 +24,11 @@ public class RecipeFindByIdHelper {
                 myRecipe.setServings(map.path("YieldNumber").asText());
                 myRecipe.setDirections(map.path("Instructions").asText());
 
-                System.out.println("\n\n\n" + myRecipe + "\n\n\n");
-
                 JsonNode ingredientsNode = map.path("Ingredients");
                 if (ingredientsNode.isArray()){
                     List<String> recipeIngredientList = new ArrayList<>();
                     createRecipeIngredientList(myRecipe, ingredientsNode, recipeIngredientList);
                 }
-               // recipeList.add(myRecipe);
             }
         }
         catch (IOException ioe) {

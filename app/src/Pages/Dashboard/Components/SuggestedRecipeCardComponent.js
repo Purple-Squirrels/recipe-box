@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
     paper: {
         position: 'absolute',
-        width: 400,
+        width: 700,
         backgroundColor:'white',
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
@@ -54,10 +54,11 @@ function getModalStyle() {
     return {
       top: `${top}%`,
       left: `${left}%`,
-      overflow:'scroll',
       transform: `translate(-${top}%, -${left}%)`,
     };
 }
+
+
   
 export default (props) => {
     const classes = useStyles();
@@ -70,6 +71,21 @@ export default (props) => {
 
     const handleClose = () => {
         setOpen(false);
+    }
+
+    const ingredientsDetails = (ingredients) =>{
+        let cleanList = "";
+        if(ingredients.length > 1){
+            for(let i=0; i<ingredients.length; i++){
+                cleanList = cleanList + ingredients[i].toString() + ', ';
+            }
+            cleanList = cleanList.substring(0, cleanList.length - 2);
+            
+        }
+        else{
+            cleanList = "N/A";
+        }
+        return cleanList;
     }
 
     return (
@@ -92,13 +108,13 @@ export default (props) => {
                          <div style={modalStyle} className={classes.paper}>
                             <h2 id="simple-modal-title">{props.recipe.recipe_name}</h2>
                             <p id="simple-modal-description">
-                                ID: {props.recipe.recipe_id}
-                                Description: {props.recipe.description}<br/>
-                                Cook Time: {props.recipe.cook_time}<br/>
-                                Servings: {props.recipe.servings}<br/>
-                                Ingredients: {props.recipe.ingredients}<br/>
-                                Directions: {props.recipe.directions}<br/>
+                                <b>Description:</b><br/> {props.recipe.description ? props.recipe.description : 'N/A'}<br/><br/>
+                                <b>Cook Time:</b> {props.recipe.cook_time ? props.recipe.cook_time : 'N/A'}<br/><br/>
+                                <b>Servings:</b> {props.recipe.servings ? props.recipe.servings : 'N/A'}<br/><br/>
+                                <b>Ingredients:</b><br/> {ingredientsDetails(props.recipe.ingredients)}<br/><br/>
+                                <b>Directions:</b><br/> {props.recipe.directions ? props.recipe.directions : 'N/A'}<br/>
                             </p>
+                            
                         </div>
                     </Modal>
             </CardActions>
