@@ -4,6 +4,7 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+
 import LoginPage from './Pages/Login/LoginPage';
 import DashboardPage from './Pages/Dashboard/DashboardPage';
 import RecipePage from './Pages/Recipes/RecipePage';
@@ -16,6 +17,7 @@ import MikeyTicTacToe from './Pages/MikeyTicTacToe/Pages/MikeyApp/MikeyApp';
 import EmmaTicTacToe from './Pages/EmmaTicTacToe/EmmaTicTacToe';
 import PrivateRoute from './Shared/PrivateRoute';
 import LogoutHandler from "./Pages/LogOut/LogOutComponent";
+
 
 const App = () => {
     const [authTokens, setAuthTokens] = useState(false);
