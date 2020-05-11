@@ -15,6 +15,9 @@ public class Recipe {
     List <String> ingredients = new ArrayList<>();
     private String directions;
 
+    public Recipe(){
+    }
+
     public Recipe(String recipe_name,
                   String recipe_id,
                   String description,
@@ -59,13 +62,28 @@ public class Recipe {
         return ingredients;
     }
 
+    public String getDirections() {
+        return directions;
+    }
+
+    public void setRecipe_name(String recipe_name) { this.recipe_name = recipe_name; }
+
+    public void setRecipe_id(String recipe_id) { this.recipe_id = recipe_id; }
+
+    public void setDescription(String description) { this.description = description; }
+
+    public void setCook_time(String cook_time) { this.cook_time = cook_time; }
+
+    public void setPrep_time(String prep_time) { this.prep_time = prep_time; }
+
+    public void setServings(String servings) { this.servings = servings; }
+
+    public void setDirections(String directions) { this.directions = directions; }
+
     public void setIngredientList(List<String> ingredientList) {
         this.ingredients = ingredientList;
     }
 
-    public String getDirections() {
-        return directions;
-    }
 
     @Override
     public String toString(){
