@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default props => {
+export default () => {
   return (
     <div className="mikey-box">
       <h3>O</h3>
