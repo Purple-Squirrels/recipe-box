@@ -35,6 +35,7 @@ export default (props) => {
           setErrorMsg('');
           alert(`Submitting name ${userName}`)
           signUpAPI(userName);
+          context.setConnectMessenger(true);
       }
       else{
           setErrorMsg('Cannot leave user name blank');

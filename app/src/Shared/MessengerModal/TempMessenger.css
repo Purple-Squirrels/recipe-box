@@ -1,0 +1,112 @@
+.messenger-modal p {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+}
+
+.messenger-modal {
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  border: 3px outset #c0c0c0;
+  box-shadow: -3px 5px rgba(135, 135, 135, 0.3);
+  border-radius: 5px;
+  height: 400px;
+  width: 300px;
+  margin: 15px;
+  bottom: 0;
+  right: 0;
+}
+
+.message-block-container-component {
+  position: unset;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background-color: #fafafa;
+  width: 100%;
+  padding: 2px;
+  min-height: 300px;
+  overflow: auto;
+}
+
+.message-block-component {
+  position: unset;
+  background-color: #3f50b5;
+  border-radius: 12px;
+  padding: 0 5px;
+  margin: 5px 0;
+}
+
+.from-current{
+  background-color: grey;
+  text-align: right;
+  margin-left: auto;
+}
+
+.message-block-component p {
+  color: #e5e7f5;
+  line-height: 1.5rem;
+}
+
+.message-form-component {
+  position: unset;
+  border: 0.1px outset #c0c0c0;
+  background-color: #ece7e7;
+  border-radius: 2px;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  align-items: flex-start;
+  box-sizing: border-box;
+  height: 15%;
+  padding: 3px;
+}
+
+.message-form-component div {
+  background-color: white;
+  border-radius: 2px;
+  width: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  min-height: 60%;
+  padding: 2px;
+  overflow: auto;
+}
+
+.user-message-input {
+  line-height: 1rem;
+  height: 100%;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.message-form-component button {
+  margin-top: 2px;
+  border-radius: 2px;
+  background-color: #3f50b5;
+  color: #e5e7f5;
+  font-size: 1rem;
+  height: 40%;
+  width: 100%;
+}
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  background-color: #3f50b5;
+  color: #e5e7f5;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: right;
+  outline: none;
+  font-size: 17px;
+  height: 10%;
+  font-weight: bold;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+.active, .collapsible:hover {
+  background-color: #ccc;
+}

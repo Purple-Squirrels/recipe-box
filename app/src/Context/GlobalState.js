@@ -1,6 +1,6 @@
 import React, { useReducer, useEffect } from 'react';
 import AppContext from './app-context';
-import { appReducer, DISPLAY_SIGNUP, CURRENT_USERNAME, MIKEYXCLICKED, MIKEYBUILDSTATE, MIKEYRESETSTATE, MIKEYSTARTGAME } from './reducers';
+import { appReducer, DISPLAY_SIGNUP, CURRENT_USERNAME, MIKEYXCLICKED, MIKEYBUILDSTATE, MIKEYRESETSTATE, MIKEYSTARTGAME, CONNECTMESSENGER } from './reducers';
 
 const GlobalState = props => {
   const [appState, dispatch] = useReducer(appReducer, {
@@ -12,7 +12,8 @@ const GlobalState = props => {
     mikeyPlayer1: true,
     mikeyGameWin: false,
     mikeyGameStart: true,
-    mikeyTieGame: false
+    mikeyTieGame: false,
+    connectMessenger: false,
   });
 
   const setDisplaySignUp = displaySignUpBoolean => {
@@ -40,6 +41,10 @@ const GlobalState = props => {
     dispatch({ type: MIKEYBUILDSTATE, state: appState });
   }, []);
 
+  const setConnectMessenger = connectMessengerBool => {
+    dispatch({ type: CONNECTMESSENGER, connectMessengerBool: connectMessengerBool });
+  }
+
 
   const globalStateObject = {
     ...appState,
@@ -47,7 +52,8 @@ const GlobalState = props => {
     setCurrentUserName: setCurrentUserName,
     mikeySetXBlock: mikeySetXBlock,
     mikeySetStartGame: mikeySetStartGame,
-    mikeyResetState: mikeyResetState
+    mikeyResetState: mikeyResetState,
+    setConnectMessenger: setConnectMessenger,
   };
 
   return (

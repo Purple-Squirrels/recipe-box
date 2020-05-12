@@ -6,6 +6,7 @@ export const MIKEYBUILDSTATE = "mikeyState";
 export const MIKEYRESETSTATE = "mikeyResetState";
 export const MIKEYSTARTGAME = "mikeyStartGame";
 
+export const CONNECTMESSENGER = 'connectMessenger';
 
 const setDisplaySignUp = (action, state) => {
   return { ...state, displaySignUp: action.displaySignUpBoolean };
@@ -102,7 +103,9 @@ const mikeyXClickedFunc = (action, state) => {
   };
 };
 
-
+const connectMessengerFunc = (action, state) => {
+  return { ...state, connectMessenger: action.connectMessengerBool };
+};
 
 export const appReducer = (state, action) => {
   switch (action.type) {
@@ -110,7 +113,6 @@ export const appReducer = (state, action) => {
       return setDisplaySignUp(action, state);
     case CURRENT_USERNAME:
       return setCurrentUserName(action, state);
-
     case MIKEYBUILDSTATE:
       return mikeyBuildStateFunc(action, state);
     case MIKEYSTARTGAME:
@@ -119,7 +121,8 @@ export const appReducer = (state, action) => {
       return mikeyXClickedFunc(action, state);
     case MIKEYRESETSTATE:
       return mikeyResetState(action, state);
-
+    case CONNECTMESSENGER:
+      return connectMessengerFunc(action, state);
     default:
       return state;
   };
